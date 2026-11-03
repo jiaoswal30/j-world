@@ -202,7 +202,7 @@ export const projects: Project[] = [
       'An internal ERP app for showroom staff: GPS check-in, leave management, and automatic blocking of clashing leave requests',
     ],
     outcomes: "Live at kahadiamonds.com. I'm not claiming commercial numbers I can't show.",
-    learned: '[TBC: one honest sentence on what this project taught you]',
+    learned: 'Kaha taught me that a brand is a story before it\'s a product — every page, video and headline had to earn the next one.',
     images: [
       { src: '/work/kaha-home.jpg', alt: 'Kaha website home: Some stories take a billion years', ratio: SCREEN, caption: 'Home — the opening line' },
       { src: '/work/kaha-campaign.jpg', alt: 'Kaha campaign photograph, model wearing lab-grown diamonds', ratio: '1028 / 1530', caption: 'Campaign — light is the product' },
@@ -236,7 +236,7 @@ export const projects: Project[] = [
       'humbawaal.com, built from scratch: Drop Room, Manifesto, Journal, Community and Insider',
     ],
     outcomes: 'We closed the brand before NAZAAR launched — so no sales numbers here, just the work and the thinking.',
-    learned: '[TBC: one honest sentence on what this project taught you]',
+    learned: 'My first business built from scratch taught me ownership: deciding what matters most this week, carrying every responsibility myself, and putting the work out in public.',
     images: [
       { src: '/work/humbawaal-patch.jpg', alt: 'Hum Bawaal patch: HUM बवाल on denim with embroidered roses', ratio: '1280 / 853', caption: 'Identity — the patch' },
       { src: '/work/humbawaal-home.jpg', alt: 'Hum Bawaal website: Room 01 NAZAAR', ratio: SCREEN, caption: 'Room 01 — NAZAAR' },
@@ -271,7 +271,7 @@ export const projects: Project[] = [
       'The brand and six invitation styles from Indian print; guests RSVP in one tap, no sign-up',
     ],
     outcomes: 'Live as a working demo. Best on a phone.',
-    learned: '[TBC: one honest sentence on what building Jalsa taught you]',
+    learned: 'Getting an AI to design posters that don\'t look alike taught me that the output is only as good as the direction — precise, specific, and opinionated.',
     images: [
       { src: '/work/jalsa-upcoming.jpg', alt: 'Jalsa app: upcoming occasions with a riso invitation', ratio: SCREEN, caption: 'Upcoming — your circle' },
       { src: '/work/jalsa-editions.jpg', alt: 'Jalsa: choosing an edition and ink for a new invitation', ratio: SCREEN, caption: 'Six editions from Indian print' },
@@ -300,7 +300,7 @@ export const projects: Project[] = [
       'Automations to remove repetitive work',
     ],
     outcomes: 'Jalsa live as a demo, RapidFunds as a working MVP, and an internal tool built for a real showroom.',
-    learned: '[TBC: one honest sentence on what building with AI taught you]',
+    learned: 'Building with AI taught me the tools are fast, but taste and clear instructions are what make the result worth using.',
     images: [],
   },
 ];
