@@ -1,0 +1,839 @@
+/* ─────────────────────────────────────────────
+   Scenes 01–03 — street, doors, room
+   Stages are drawn at 1600×1000 and cover-fit the viewport,
+   anchored to the pavement so the doorway is always in frame.
+   ───────────────────────────────────────────── */
+
+.arrival {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  background: var(--night);
+}
+
+.arrival__layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.arrival__interior {
+  z-index: 1;
+  background: #d9cbae;
+}
+.arrival__room-ui {
+  z-index: 2;
+  pointer-events: none;
+}
+.arrival__exterior {
+  z-index: 3;
+}
+.arrival__journey {
+  z-index: 5;
+  /* the prologue sits above the room; never let it swallow clicks once it's gone */
+  pointer-events: none;
+}
+
+.stage {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: max(100vw, 160vh);
+  width: max(100vw, 160svh);
+  margin-left: calc(max(100vw, 160vh) / -2);
+  margin-left: calc(max(100vw, 160svh) / -2);
+  aspect-ratio: 1.6;
+  container-type: inline-size;
+}
+
+.stage__art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ───────── exterior details ───────── */
+
+.blade {
+  position: absolute;
+  left: 89.4%;
+  top: 43.1%;
+  width: 10%;
+  overflow: visible;
+}
+.blade__swing {
+  transform-box: view-box;
+  transform-origin: 95px 16px;
+  animation: swing 7s ease-in-out infinite alternate;
+}
+@keyframes swing {
+  from { transform: rotate(-2.2deg); }
+  to { transform: rotate(2.4deg); }
+}
+
+.doorway {
+  position: absolute;
+  left: 43.125%;
+  top: 59.5%;
+  width: 13.75%;
+  height: 30.5%;
+  perspective: 700px;
+}
+
+.door {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(180deg, #6d2025, #4a1418);
+  box-shadow: inset 0 0 0 0.22cqw #3d0e12, inset 0 0 0 0.3cqw rgba(176, 116, 34, 0.35);
+}
+.door--left {
+  left: 0;
+  transform-origin: 0 50%;
+}
+.door--right {
+  right: 0;
+  transform-origin: 100% 50%;
+}
+
+.door__glass {
+  position: absolute;
+  left: 15%;
+  right: 15%;
+  top: 6%;
+  height: 60%;
+  overflow: hidden;
+  /* frosted look without backdrop-filter (which flickers inside 3D-rotated parents) */
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 240, 210, 0.08) 0 2px, transparent 2px 5px),
+    linear-gradient(180deg, rgba(255, 226, 170, 0.62), rgba(214, 150, 60, 0.5));
+  border: 0.12cqw solid #c98b2b;
+}
+.door__glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(125deg, rgba(255, 255, 255, 0.22) 0 18%, transparent 18% 32%, rgba(255, 255, 255, 0.1) 32% 38%, transparent 38%);
+}
+.door__glass::after {
+  content: '';
+  position: absolute;
+  inset: -40%;
+  background: var(--iridescent);
+  mix-blend-mode: soft-light;
+  opacity: 0.8;
+}
+
+.door__kick {
+  position: absolute;
+  left: 15%;
+  right: 15%;
+  bottom: 6%;
+  height: 20%;
+  box-shadow: inset 0 0 0 0.12cqw #8a3a3a;
+}
+
+.door__handle {
+  position: absolute;
+  top: 44%;
+  width: 0.3cqw;
+  height: 3cqw;
+  border-radius: 1cqw;
+  background: linear-gradient(90deg, #8a5a1c, #f3d387, #8a5a1c);
+}
+.door--left .door__handle { right: 6%; }
+.door--right .door__handle { left: 6%; }
+
+.door__sign {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: 20%;
+  width: 84%;
+  padding: 0.25cqw 0.2cqw 0.35cqw;
+  text-align: center;
+  background: var(--paper-3);
+  transform: translateX(-50%) rotate(-4deg);
+  box-shadow: 0 0.2cqw 0.5cqw rgba(0, 0, 0, 0.3);
+}
+.door__sign::before {
+  content: '';
+  position: absolute;
+  left: 20%;
+  right: 20%;
+  top: -1.2cqw;
+  height: 1.2cqw;
+  border: 0.06cqw solid #1c1512;
+  border-bottom: 0;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  background: linear-gradient(to bottom right, transparent 49.5%, #1c1512 49.5% 50.5%, transparent 50.5%),
+    linear-gradient(to bottom left, transparent 49.5%, #1c1512 49.5% 50.5%, transparent 50.5%);
+  border: 0;
+}
+.door__sign-open {
+  display: block;
+  font-family: var(--f-display);
+  font-size: 1.15cqw;
+  line-height: 1;
+  color: var(--oxblood);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.door__sign-note {
+  display: block;
+  margin-top: 0.1cqw;
+  font-family: var(--f-hand);
+  font-size: 0.9cqw;
+  line-height: 0.95;
+  color: var(--ink);
+}
+
+.arrival__bloom {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 60% 70% at 50% 74%, #fff6dc 0, #f6cf86 38%, rgba(224, 164, 58, 0.85) 70%, #b5652a 100%);
+}
+
+.arrival__vignette {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 34% 40% at 50% 74%, transparent 0, rgba(9, 8, 14, 0.8) 100%);
+}
+
+/* street lamp — foreground */
+.lamppost {
+  position: absolute;
+  left: max(1.5vw, 6px);
+  bottom: 0;
+  height: 94svh;
+  aspect-ratio: 140 / 900;
+  transform-origin: 0 100%;
+  pointer-events: none;
+}
+.lamppost svg {
+  width: 100%;
+  height: 100%;
+}
+.lamppost__glow {
+  position: absolute;
+  left: 50%;
+  top: 15%;
+  width: 46svh;
+  height: 46svh;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 216, 145, 0.42) 0, rgba(255, 216, 145, 0.12) 35%, transparent 65%);
+  mix-blend-mode: screen;
+  animation: flicker 9s infinite;
+}
+@keyframes flicker {
+  0%, 18%, 22%, 61%, 63%, 100% { opacity: 1; }
+  20% { opacity: 0.72; }
+  62% { opacity: 0.84; }
+}
+
+/* chalkboard — foreground */
+.chalkboard {
+  position: absolute;
+  right: 7vw;
+  bottom: 2svh;
+  width: clamp(210px, 19vw, 320px);
+  transform-origin: 100% 100%;
+}
+.chalkboard__board {
+  position: relative;
+  z-index: 1;
+  padding: clamp(14px, 1.3vw, 22px) clamp(14px, 1.4vw, 24px) clamp(14px, 1.2vw, 20px);
+  background:
+    radial-gradient(ellipse at 30% 40%, rgba(255, 255, 255, 0.07), transparent 60%),
+    radial-gradient(ellipse at 80% 80%, rgba(255, 255, 255, 0.05), transparent 50%),
+    #1d2520;
+  border: clamp(7px, 0.6vw, 11px) solid #6b4430;
+  box-shadow: inset 0 0 0 2px #4a2e21, 0 20px 30px -10px rgba(0, 0, 0, 0.7);
+  transform: rotate(1deg);
+}
+.chalkboard__head {
+  display: block;
+  color: var(--saffron);
+  margin-bottom: 8px;
+  font-size: 10px;
+}
+.chalkboard__text {
+  font-family: var(--f-hand);
+  font-size: clamp(20px, 1.65vw, 28px);
+  line-height: 1.02;
+  color: rgba(239, 231, 214, 0.92);
+}
+.chalkboard__sign {
+  display: block;
+  text-align: right;
+  font-family: var(--f-hand);
+  font-size: clamp(20px, 1.5vw, 26px);
+  color: var(--saffron-soft);
+  margin-top: 4px;
+}
+.chalkboard__leg {
+  position: absolute;
+  bottom: -9%;
+  width: 7%;
+  height: 40%;
+  background: #4a2e21;
+}
+.chalkboard__leg--l { left: 8%; transform: rotate(6deg); }
+.chalkboard__leg--r { right: 8%; transform: rotate(-6deg); }
+
+.scroll-hint {
+  position: absolute;
+  left: 50%;
+  bottom: max(2.2svh, 14px);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: var(--paper);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8);
+}
+.scroll-hint__line {
+  width: 1px;
+  height: 34px;
+  background: linear-gradient(var(--saffron), transparent);
+  transform-origin: top;
+  animation: hint 2.2s var(--ease-out) infinite;
+}
+@keyframes hint {
+  0% { transform: scaleY(0); opacity: 1; }
+  70% { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(1); opacity: 0; }
+}
+
+/* ───────── interior details ───────── */
+
+.ring-text {
+  position: absolute;
+  left: 35.31%;
+  top: 9.5%;
+  width: 29.375%;
+  aspect-ratio: 1;
+  overflow: visible;
+  will-change: transform;
+  animation: ring 120s linear infinite;
+}
+@keyframes ring {
+  to { transform: rotate(360deg); }
+}
+@keyframes breathe {
+  from { opacity: 0.8; }
+  to { opacity: 1; }
+}
+
+.room-card {
+  position: absolute;
+  left: var(--gutter);
+  top: clamp(84px, 13svh, 150px);
+  width: min(31vw, 440px);
+  padding: 26px 28px 30px;
+  background: var(--paper-3);
+  color: var(--ink);
+  pointer-events: auto;
+  transform: rotate(-1.5deg);
+  box-shadow: 0 24px 40px -22px rgba(28, 21, 18, 0.7), 0 1px 0 rgba(0, 0, 0, 0.06);
+}
+.room-card__tape {
+  position: absolute;
+  top: -13px;
+  left: 38%;
+  width: 92px;
+  height: 26px;
+  background: rgba(224, 164, 58, 0.62);
+  transform: rotate(3deg);
+  mix-blend-mode: multiply;
+}
+.room-card__kicker {
+  color: var(--oxblood);
+  margin-bottom: 14px;
+}
+.room-card__statement {
+  font-family: var(--f-display);
+  font-weight: 400;
+  font-size: clamp(23px, 2.05vw, 34px);
+  line-height: 1.1;
+  letter-spacing: -0.005em;
+}
+.room-card__statement em {
+  font-family: var(--f-text);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--oxblood);
+}
+
+/* ───────── vinyl ───────── */
+
+.vinyl {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  container-type: inline-size;
+}
+.vinyl__disc {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, transparent 0 34%, rgba(255, 255, 255, 0.07) 34.6% 35.4%, transparent 36% 63%, rgba(255, 255, 255, 0.05) 63.4% 64%, transparent 64.6% 95.5%, rgba(255, 255, 255, 0.08) 96% 97%, transparent 97.6%),
+    repeating-radial-gradient(circle, #171312 0 0.55cqw, #221c19 0.55cqw 0.8cqw, #121010 0.8cqw 1.2cqw),
+    #141110;
+  box-shadow: 0 0.8cqw 2.4cqw rgba(0, 0, 0, 0.45);
+}
+.vinyl__label {
+  position: absolute;
+  inset: 32%;
+  border-radius: 50%;
+  background: var(--label);
+  color: var(--label-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.vinyl__code {
+  position: absolute;
+  top: 12%;
+  font-family: var(--f-display);
+  font-size: 7.5cqw;
+  line-height: 1;
+}
+.vinyl__title {
+  position: absolute;
+  bottom: 16%;
+  width: 78%;
+  font-family: var(--f-mono);
+  font-size: 2cqw;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.vinyl__rpm {
+  position: absolute;
+  left: 9%;
+  top: 44%;
+  font-family: var(--f-mono);
+  font-size: 1.8cqw;
+}
+.vinyl__hole {
+  width: 3cqw;
+  height: 3cqw;
+  border-radius: 50%;
+  background: #0c0a09;
+  box-shadow: inset 0 0 0 0.6cqw rgba(255, 255, 255, 0.28);
+}
+.vinyl__sheen {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  background: var(--iridescent), linear-gradient(135deg, rgba(255, 255, 255, 0.16), transparent 38%, transparent 62%, rgba(255, 255, 255, 0.08));
+  mix-blend-mode: screen;
+  opacity: 0.45;
+}
+
+/* ───────── turntable ───────── */
+
+.tt {
+  position: absolute;
+  left: 40.625%;
+  width: 18.75%;
+  bottom: 45.5%;
+}
+.tt__deckwrap {
+  position: relative;
+  aspect-ratio: 300 / 120;
+}
+.tt__deck {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  aspect-ratio: 300 / 230;
+  transform-origin: 50% 100%;
+  transform: perspective(800px) rotateX(58deg);
+  border-radius: 6px;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 3px),
+    linear-gradient(160deg, #e6e2d9, #bdb7ab 60%, #a59e90);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.45), inset 0 -4px 0 rgba(0, 0, 0, 0.12);
+}
+.tt__platter {
+  position: absolute;
+  left: 6%;
+  top: 7%;
+  width: 64%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, #2b2b2b 0 62%, #444 62% 63%, #1a1a1a 63%);
+  box-shadow: 0 0 0 3px #cfcac0, 0 0 0 4px #8d877c, 0 6px 14px rgba(0, 0, 0, 0.45);
+}
+.tt__record {
+  position: absolute;
+  inset: 2%;
+}
+.tt__arm {
+  position: absolute;
+  right: 8%;
+  top: 8%;
+  width: 6%;
+  height: 70%;
+  transform-origin: 50% 5%;
+}
+.tt__arm-base {
+  position: absolute;
+  left: 50%;
+  top: 5%;
+  width: 150%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle at 35% 35%, #fbfaf6, #9c968b 60%, #6b665d);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
+}
+.tt__arm-rod {
+  position: absolute;
+  left: 50%;
+  top: 5%;
+  bottom: 7%;
+  width: 3px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, #8d877c, #f6f3ec, #8d877c);
+  box-shadow: 2px 3px 3px rgba(0, 0, 0, 0.18);
+}
+.tt__arm-head {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 90%;
+  height: 10%;
+  border-radius: 2px;
+  background: var(--ink);
+  transform: translateX(-62%) rotate(16deg);
+}
+.tt__knob {
+  position: absolute;
+  left: 8%;
+  bottom: 5%;
+  width: 5%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff, #8d877c);
+}
+.tt__knob--b {
+  left: 16%;
+}
+.tt__front {
+  display: flex;
+  align-items: center;
+  gap: 6%;
+  aspect-ratio: 300 / 34;
+  padding: 0 6%;
+  background: linear-gradient(#5a3826, #3a2317);
+  border-top: 2px solid #c98b2b;
+  color: rgba(239, 231, 214, 0.75);
+  font-family: var(--f-mono);
+  font-size: 0.55cqw;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.tt__led {
+  width: 0.4cqw;
+  height: 0.4cqw;
+  border-radius: 50%;
+  background: var(--saffron);
+  box-shadow: 0 0 0.6cqw var(--saffron);
+}
+.tt__brand {
+  margin-left: auto;
+}
+
+/* ───────── record rail ───────── */
+
+.rail {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: clamp(14px, 3.4svh, 36px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+.rail.is-playing .sleeve {
+  pointer-events: none;
+}
+.rail__list {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: clamp(14px, 2.2vw, 40px);
+  padding: 0 var(--gutter);
+  pointer-events: auto;
+}
+.rail__item {
+  width: clamp(104px, 11vw, 182px);
+}
+.rail__ledge {
+  width: min(1120px, 94vw);
+  height: 14px;
+  margin-top: -4px;
+  background: linear-gradient(#8a5a3c, #4a2e21);
+  box-shadow: 0 14px 22px -6px rgba(0, 0, 0, 0.55);
+}
+.rail__caption {
+  margin-top: 12px;
+  padding: 6px 12px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 10px;
+}
+
+.sleeve {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  cursor: var(--cursor-play);
+  transform: rotate(var(--tilt, 0deg));
+  transition: transform 0.55s var(--ease-out);
+}
+.sleeve__vinyl {
+  position: absolute;
+  top: 3%;
+  left: 3%;
+  width: 94%;
+  transition: transform 0.75s var(--ease-out);
+}
+.sleeve__cover {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  box-shadow: 0 16px 26px -12px rgba(0, 0, 0, 0.65), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  transition: transform 0.55s var(--ease-out);
+}
+.sleeve-art {
+  width: 100%;
+  height: 100%;
+}
+.sleeve__foil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 30%, rgba(201, 184, 232, 0.6) 44%, rgba(207, 227, 234, 0.65) 51%, rgba(241, 201, 121, 0.45) 58%, transparent 72%);
+  background-size: 260% 100%;
+  background-position: 115% 0;
+  mix-blend-mode: overlay;
+  transition: background-position 1s var(--ease-out);
+}
+.sleeve__tag {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 16px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 7px 12px 9px;
+  white-space: nowrap;
+  background: var(--paper-3);
+  color: var(--ink);
+  box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transform: translate(-50%, 8px) rotate(-2deg);
+  transition: opacity 0.3s, transform 0.45s var(--ease-out);
+  pointer-events: none;
+}
+.sleeve__tag .mono {
+  font-size: 9.5px;
+  color: var(--oxblood);
+}
+.sleeve__tag-title {
+  font-family: var(--f-hand);
+  font-size: 26px;
+  line-height: 0.85;
+}
+
+@media (hover: hover) {
+  .sleeve:hover {
+    transform: rotate(0deg) translateY(-16px);
+  }
+  .sleeve:hover .sleeve__vinyl {
+    transform: translateX(46%) rotate(50deg);
+  }
+  .sleeve:hover .sleeve__cover {
+    transform: translateX(-8%);
+  }
+  .sleeve:hover .sleeve__foil {
+    background-position: -15% 0;
+  }
+  .sleeve:hover .sleeve__tag {
+    opacity: 1;
+    transform: translate(-50%, 0) rotate(-2deg);
+  }
+}
+.sleeve:focus-visible {
+  transform: rotate(0deg) translateY(-16px);
+}
+.sleeve:focus-visible .sleeve__vinyl {
+  transform: translateX(46%) rotate(50deg);
+}
+.sleeve:focus-visible .sleeve__tag {
+  opacity: 1;
+  transform: translate(-50%, 0) rotate(-2deg);
+}
+
+.vinyl-ghost {
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* ───────── small screens: reinterpret, don't shrink ───────── */
+
+@media (max-width: 760px) {
+  .lamppost {
+    height: 72svh;
+    left: -3vw;
+  }
+  .chalkboard {
+    right: 3vw;
+    width: 44vw;
+    bottom: 1svh;
+  }
+  .chalkboard__text {
+    font-size: 19px;
+  }
+  .scroll-hint {
+    left: 38%;
+  }
+  .room-card {
+    left: 16px;
+    right: 16px;
+    top: 74px;
+    width: auto;
+    padding: 20px 20px 22px;
+  }
+  .room-card__statement {
+    font-size: clamp(21px, 6.2vw, 26px);
+  }
+  .rail {
+    bottom: 10px;
+  }
+  .rail__list {
+    justify-content: flex-start;
+    width: 100%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 26px 16px 4px;
+    gap: 16px;
+    scrollbar-width: none;
+  }
+  .rail__list::-webkit-scrollbar {
+    display: none;
+  }
+  .rail__item {
+    flex: 0 0 34vw;
+    width: 34vw;
+    scroll-snap-align: center;
+  }
+  .rail__ledge {
+    display: none;
+  }
+  .sleeve__tag {
+    position: absolute;
+    bottom: auto;
+    top: calc(100% + 6px);
+    opacity: 1;
+    transform: translateX(-50%) rotate(-2deg);
+    padding: 3px 8px 5px;
+  }
+  .sleeve__tag-title {
+    font-size: 19px;
+  }
+  .rail__item {
+    padding-bottom: 46px;
+  }
+  .rail__caption {
+    display: none;
+  }
+}
+
+/* ───────── reduced motion: two calm, still frames ───────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .arrival {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .arrival__layer {
+    position: relative;
+    inset: auto;
+    height: 100svh;
+    flex: none;
+  }
+  .arrival__journey { order: 0; }
+  .arrival__exterior { order: 1; }
+  .arrival__interior { order: 2; }
+  .arrival__room-ui { order: 3; margin-top: -100svh; }
+  .journey__map, .captions { display: none; }
+  .scroll-hint { display: none; }
+}
+
+/* Portrait: frame the whole shopfront under a tall night sky instead of cropping the sign. */
+@media (max-aspect-ratio: 4 / 5) {
+  .arrival__exterior {
+    background:
+      radial-gradient(1px 1px at 18% 12%, rgba(239, 231, 214, 0.8), transparent),
+      radial-gradient(1px 1px at 72% 8%, rgba(239, 231, 214, 0.6), transparent),
+      radial-gradient(1.5px 1.5px at 84% 26%, rgba(239, 231, 214, 0.7), transparent),
+      radial-gradient(1px 1px at 34% 31%, rgba(239, 231, 214, 0.5), transparent),
+      radial-gradient(1px 1px at 58% 19%, rgba(239, 231, 214, 0.45), transparent),
+      radial-gradient(1.5px 1.5px at 9% 38%, rgba(239, 231, 214, 0.55), transparent),
+      linear-gradient(#0b0d17, #1f2338);
+  }
+  .arrival__exterior .stage {
+    width: 188vw;
+    margin-left: -94vw;
+    bottom: 9svh;
+  }
+  .arrival__exterior::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 9.4svh;
+    z-index: -1;
+    background: #2a2421;
+    box-shadow: inset 0 -12px 0 #3a332e;
+  }
+  .chalkboard {
+    z-index: 1;
+    width: 40vw;
+    bottom: 3svh;
+  }
+  .lamppost {
+    z-index: 1;
+    height: 66svh;
+  }
+  .scroll-hint {
+    z-index: 1;
+    left: 50%;
+    bottom: auto;
+    top: 22svh;
+  }
+}

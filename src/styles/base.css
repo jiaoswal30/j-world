@@ -1,0 +1,271 @@
+/* ─────────────────────────────────────────────
+   THE LISTENING ROOM — design tokens & base
+   Palette: "Lacquer & Celadon"
+   ───────────────────────────────────────────── */
+
+:root {
+  --ink: #1c1512;
+  --ink-2: #2a211c;
+  --night: #171a28;
+  --paper: #efe7d6;
+  --paper-2: #e4d9c2;
+  --paper-3: #f6f1e6;
+  --oxblood: #5e1a1f;
+  --oxblood-2: #7e2a2c;
+  --celadon: #a9bca0;
+  --celadon-deep: #4e6151;
+  --saffron: #e0a43a;
+  --saffron-soft: #f1c979;
+  --cobalt: #2335c8;
+  --cobalt-deep: #1a2797;
+  --walnut: #4a2e21;
+  --walnut-2: #6b4430;
+  --lilac: #c9b8e8;
+  --ice: #cfe3ea;
+  --denim: #2b3a5c;
+
+  --f-display: 'Gloock', 'Times New Roman', serif;
+  --f-text: 'Newsreader', Georgia, serif;
+  --f-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace;
+  --f-hand: 'Reenie Beanie', 'Bradley Hand', cursive;
+
+  --gutter: clamp(16px, 4.5vw, 72px);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --iridescent: conic-gradient(
+    from 210deg,
+    rgba(201, 184, 232, 0) 0deg,
+    rgba(201, 184, 232, 0.55) 40deg,
+    rgba(207, 227, 234, 0.6) 80deg,
+    rgba(241, 201, 121, 0.35) 120deg,
+    rgba(201, 184, 232, 0) 170deg,
+    rgba(207, 227, 234, 0.4) 250deg,
+    rgba(201, 184, 232, 0) 360deg
+  );
+
+  /* Custom "play" cursor for records */
+  --cursor-play: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='17' fill='%23E0A43A' stroke='%231C1512' stroke-width='1.5'/%3E%3Cpath d='M16 13l11 7-11 7z' fill='%231C1512'/%3E%3C/svg%3E") 20 20, pointer;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html.is-locked {
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  background: var(--night);
+  color: var(--ink);
+  font-family: var(--f-text);
+  font-size: clamp(17px, 1.1vw + 6px, 20px);
+  line-height: 1.55;
+  overflow-x: hidden;
+}
+
+main {
+  overflow-x: clip;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+figure,
+blockquote {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--saffron);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--saffron);
+  color: var(--ink);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ───────── shared type ───────── */
+
+.mono {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+.hand {
+  font-family: var(--f-hand);
+  font-size: 1.6em;
+  line-height: 1;
+}
+
+.display {
+  font-family: var(--f-display);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 0.95;
+}
+
+em {
+  font-style: italic;
+}
+
+/* Placeholder that is impossible to miss and impossible to mistake for a claim */
+mark.tbc {
+  background: repeating-linear-gradient(-45deg, rgba(35, 53, 200, 0.1) 0 6px, rgba(35, 53, 200, 0.18) 6px 12px);
+  color: var(--cobalt);
+  font-family: var(--f-mono);
+  font-size: 0.72em;
+  letter-spacing: 0.02em;
+  padding: 0.1em 0.4em;
+  border-radius: 2px;
+  border: 1px dashed currentColor;
+  font-style: normal;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.on-dark mark.tbc {
+  color: var(--ice);
+  background: rgba(207, 227, 234, 0.08);
+}
+/* paper surfaces inside dark sections get the ink version back */
+.on-dark .receipt mark.tbc,
+.on-dark .contact mark.tbc,
+.on-dark .card mark.tbc {
+  color: var(--cobalt);
+  background: repeating-linear-gradient(-45deg, rgba(35, 53, 200, 0.1) 0 6px, rgba(35, 53, 200, 0.18) 6px 12px);
+}
+
+/* split-text line masks */
+.line-mask {
+  overflow: clip;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+/* ───────── grain ───────── */
+
+.grain {
+  position: fixed;
+  inset: -50%;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.16;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ───────── curtain (font-load fallback) ───────── */
+
+#curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--night);
+  pointer-events: none;
+  transition: opacity 0.7s var(--ease-out);
+}
+
+#curtain.is-up {
+  opacity: 0;
+}
+
+/* ───────── sections ───────── */
+
+.section {
+  position: relative;
+  padding: clamp(96px, 14vh, 180px) var(--gutter);
+}
+
+.section > * {
+  position: relative;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* keyboard / screen-reader shortcut past the 3D prologue */
+.skip-link {
+  position: fixed;
+  left: 16px;
+  top: 12px;
+  z-index: 300;
+  padding: 10px 14px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--f-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transform: translateY(-160%);
+  transition: transform 0.3s var(--ease-out);
+}
+.skip-link:focus-visible {
+  transform: none;
+}
+section[tabindex='-1']:focus {
+  outline: none;
+}

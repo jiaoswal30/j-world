@@ -1,0 +1,395 @@
+/* ─────────────────────────────────────────────
+   Prologue — Earth → clouds → Karnataka → Bengaluru
+   Title card set in the fashion-edit language: a script word with a glass ghost,
+   repeated micro-labels, dots, sparkle stars and edge ticks.
+   ───────────────────────────────────────────── */
+
+:root {
+  --mint: #a8ede2;
+  --mint-deep: #5fc4b5;
+  --brown: #4a1c12;
+  --blush: #ecc5c8;
+  --f-script: 'Pinyon Script', 'Snell Roundhand', cursive;
+}
+
+.journey {
+  --hole: 0vmax;
+  position: absolute;
+  inset: 0;
+  background: #05060c;
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent calc(var(--hole) - 1px), #000 var(--hole));
+  mask-image: radial-gradient(circle at 50% 50%, transparent calc(var(--hole) - 1px), #000 var(--hole));
+}
+.journey__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.journey__fallback {
+  position: absolute;
+  left: 50%;
+  top: 58%;
+  width: min(70vw, 70vh);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background-position: 0 50%;
+  background-size: 200% 100%;
+  box-shadow: inset -40px -10px 80px #000, 0 0 60px rgba(92, 150, 255, 0.4);
+  animation: fallback-spin 60s linear infinite;
+}
+@keyframes fallback-spin {
+  to { background-position: -200% 50%; }
+}
+
+.journey__fog {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 50% at 30% 40%, rgba(255, 255, 255, 0.9), transparent 70%),
+    radial-gradient(ellipse 60% 60% at 75% 65%, rgba(240, 244, 255, 0.95), transparent 70%),
+    #e9eef6;
+}
+
+/* the map plate */
+.journey__map {
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
+  opacity: 0;
+  background: radial-gradient(ellipse at 50% 45%, #141a30, #070912 75%);
+}
+.journey__map svg {
+  position: absolute;
+  inset: 6vh 4vw;
+  width: calc(100% - 8vw);
+  height: calc(100% - 12vh);
+  overflow: visible;
+}
+.state {
+  fill: #1b2138;
+  stroke: rgba(239, 231, 214, 0.42);
+  stroke-width: 0.8;
+}
+.state--ka {
+  stroke: #f6d38a;
+  stroke-width: 1.4;
+}
+.map-labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  color: var(--paper);
+}
+.map-label {
+  position: absolute;
+  left: 50%;
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  text-align: center;
+  visibility: hidden;
+  opacity: 0;
+}
+.map-label .mono {
+  color: var(--mint);
+}
+.map-label .script {
+  font-family: var(--f-script);
+  font-size: clamp(56px, 7vw, 110px);
+  line-height: 1;
+  text-shadow: 0 6px 30px rgba(0, 0, 0, 0.6);
+}
+.map-label--india {
+  top: 8vh;
+  transform: translateX(-50%);
+}
+.map-label--ka {
+  top: 6vh;
+  transform: translateX(-50%);
+}
+.map-label--blr {
+  left: calc(50% + 34px);
+  top: calc(50% - 30px);
+  justify-items: start;
+  text-align: left;
+}
+.map-label--blr .script {
+  color: var(--paper);
+}
+.map-pin {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  visibility: hidden;
+  opacity: 0;
+}
+.map-pin__dot,
+.map-pin__ring {
+  position: absolute;
+  left: -9px;
+  top: -9px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+}
+.map-pin__dot {
+  background: var(--saffron);
+  box-shadow: 0 0 0 4px rgba(224, 164, 58, 0.25), 0 0 40px 10px rgba(255, 200, 110, 0.7);
+}
+.map-pin__ring {
+  border: 1.5px solid var(--saffron);
+  animation: pin-ring 1.8s var(--ease-out) infinite;
+}
+@keyframes pin-ring {
+  from { transform: scale(1); opacity: 1; }
+  to { transform: scale(4.5); opacity: 0; }
+}
+
+/* story captions — like subtitles in a film */
+.captions {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: clamp(36px, 9vh, 90px);
+  pointer-events: none;
+}
+.caption {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  display: grid;
+  gap: 8px;
+  max-width: 22ch;
+  visibility: hidden;
+  opacity: 0;
+  color: var(--paper);
+}
+.caption__n {
+  color: var(--mint);
+  font-size: 10px;
+}
+.caption__text {
+  font-family: var(--f-display);
+  font-size: clamp(28px, 3.4vw, 54px);
+  line-height: 1.02;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.55);
+}
+.caption:nth-child(3) .caption__text {
+  color: var(--ink);
+  text-shadow: none;
+}
+.caption:nth-child(3) .caption__n {
+  color: var(--oxblood);
+}
+
+/* ───────── the title card ───────── */
+
+.journey__title {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.tcard {
+  position: absolute;
+  inset: 0;
+  color: var(--paper);
+}
+.tcard__center {
+  position: absolute;
+  left: 50%;
+  top: 23vh;
+  width: min(92vw, 1100px);
+  transform: translateX(-50%);
+  text-align: center;
+}
+.tcard__heading {
+  color: var(--mint);
+  letter-spacing: 0.3em;
+}
+.tcard__word {
+  position: relative;
+  margin: 2vh 0 0;
+  font-weight: 400;
+  line-height: 0.82;
+}
+.tcard__word-main {
+  display: block;
+  font-family: var(--f-script);
+  font-size: clamp(96px, 15vw, 250px);
+  color: var(--mint);
+  text-shadow: 0 10px 60px rgba(95, 196, 181, 0.35);
+}
+/* the translucent embossed ghost, from the "Pink" edit */
+.tcard__word-ghost {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 34%;
+  font-family: var(--f-script);
+  font-size: clamp(96px, 15vw, 250px);
+  color: rgba(255, 255, 255, 0.05);
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.32);
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.18), -1px -1px 0 rgba(0, 0, 0, 0.25);
+  transform: translateX(4%);
+  pointer-events: none;
+}
+.tcard__sub {
+  max-width: 34ch;
+  margin: 3vh auto 0;
+  font-style: italic;
+  font-size: clamp(17px, 1.3vw, 21px);
+  opacity: 0.85;
+}
+.tcard__sound {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 22px;
+  padding: 10px 16px;
+  border: 1px solid rgba(168, 237, 226, 0.5);
+  color: var(--mint);
+  pointer-events: auto;
+  transition: background 0.3s, color 0.3s;
+}
+.tcard__sound:hover,
+.tcard__sound[aria-pressed='true'] {
+  background: var(--mint);
+  color: var(--ink);
+}
+.tcard__sound-disc {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, currentColor 0 22%, transparent 23% 40%, currentColor 41% 46%, transparent 47%);
+  border: 1px solid currentColor;
+}
+.tcard__sound[aria-pressed='true'] .tcard__sound-disc {
+  animation: spin 1.8s linear infinite;
+}
+
+.tcard__corner {
+  position: absolute;
+  bottom: 58px;
+  font-family: var(--f-text);
+  font-style: italic;
+  font-size: 12px;
+  line-height: 1.2;
+  opacity: 0.8;
+}
+.tcard__corner--tl { left: var(--gutter); }
+.tcard__corner--tr { right: var(--gutter); text-align: right; }
+
+.tcard__ticks {
+  position: absolute;
+  top: 18vh;
+  bottom: 14vh;
+  width: 6px;
+  background: repeating-linear-gradient(to bottom, var(--mint) 0 4px, transparent 4px 34px);
+  opacity: 0.8;
+}
+.tcard__ticks--l { left: 14px; }
+.tcard__ticks--r { right: 14px; }
+
+.tcard__repeat {
+  position: absolute;
+  right: 5vw;
+  top: 20vh;
+  bottom: 20vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: var(--f-text);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--mint);
+  opacity: 0.7;
+}
+.tcard__repeat li {
+  writing-mode: vertical-rl;
+}
+.tcard__repeat li:nth-child(3),
+.tcard__repeat li:nth-child(4) {
+  margin-right: 14px;
+}
+
+.tcard__dot {
+  position: absolute;
+  border-radius: 50%;
+}
+.tcard__dot--a { left: 14vw; top: 30vh; width: 22px; height: 22px; background: var(--brown); box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15); }
+.tcard__dot--b { left: 17vw; top: 36vh; width: 8px; height: 8px; background: var(--mint); }
+.tcard__dot--c { right: 15vw; top: 62vh; width: 14px; height: 14px; background: var(--mint); }
+.tcard__dot--d { right: 22vw; top: 18vh; width: 30px; height: 30px; background: var(--brown); box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12); }
+
+.sparkle {
+  position: absolute;
+  fill: var(--mint);
+  filter: drop-shadow(0 0 12px rgba(168, 237, 226, 0.6));
+}
+.tcard__spark--a { left: 22vw; top: 20vh; width: 46px; animation: twinkle 4s ease-in-out infinite; }
+.tcard__spark--b { right: 12vw; top: 48vh; width: 28px; animation: twinkle 5s ease-in-out -2s infinite; }
+@keyframes twinkle {
+  50% { transform: scale(0.7) rotate(20deg); opacity: 0.6; }
+}
+
+.tcard__scroll {
+  position: absolute;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: var(--paper);
+  opacity: 0.8;
+}
+.tcard__scroll-line {
+  width: 1px;
+  height: 34px;
+  background: linear-gradient(var(--mint), transparent);
+  transform-origin: top;
+  animation: hint 2.2s var(--ease-out) infinite;
+}
+
+@media (max-width: 760px) {
+  .tcard__center { top: 17vh; }
+  .tcard__heading { letter-spacing: 0.14em; font-size: 9.5px; }
+  .tcard__word-main,
+  .tcard__word-ghost {
+    font-size: 21vw;
+    white-space: nowrap;
+  }
+  .tcard__word-ghost { top: 42%; }
+  .map-label--blr {
+    left: 50%;
+    top: calc(50% + 24px);
+    transform: translateX(-50%);
+    justify-items: center;
+    text-align: center;
+  }
+  .map-label .script { font-size: 54px; }
+  .tcard__repeat { display: none; }
+  .tcard__corner { bottom: 70px; }
+  .tcard__dot--a { left: 8vw; top: 14vh; }
+  .tcard__dot--d { right: 8vw; top: 56vh; }
+  .tcard__spark--a { left: 10vw; top: 52vh; }
+  .caption { max-width: 16ch; }
+}
+
+/* short laptop screens: keep the repeated labels on one clean column */
+.tcard__repeat li {
+  white-space: nowrap;
+}
+@media (max-height: 760px) {
+  .tcard__repeat li:nth-child(n + 5) {
+    display: none;
+  }
+}
