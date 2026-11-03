@@ -197,6 +197,7 @@ export function LastTrack() {
             </div>
           ))}
         </dl>
+        <p className="laptop-note mono">psst — this room was built for a bigger screen. Open it on a laptop for the full walk-in.</p>
         <div className="credits__end">
           <span className="mono">© {new Date().getFullYear()} {person.name} · The Listening Room</span>
           <button type="button" className="mono credits__top" onClick={() => scrollToTarget(0, { duration: 2.6 })}>

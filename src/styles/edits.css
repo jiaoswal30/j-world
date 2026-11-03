@@ -431,3 +431,18 @@
 @media (prefers-reduced-motion: reduce) {
   .starcut__window::after { animation: none; }
 }
+
+/* phones only: a quiet nudge toward the full experience */
+.laptop-note {
+  display: none;
+}
+@media (max-width: 760px), (hover: none) and (pointer: coarse) {
+  .laptop-note {
+    display: block;
+    margin-top: 40px;
+    font-size: 9.5px;
+    opacity: 0.55;
+    text-transform: none;
+    letter-spacing: 0.06em;
+  }
+}

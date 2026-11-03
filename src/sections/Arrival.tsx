@@ -54,7 +54,8 @@ export function Arrival() {
             pin: true,
             scrub: 0.8,
             anticipatePin: 1,
-            invalidateOnRefresh: true,
+            // no invalidateOnRefresh: Safari re-measures after fonts/images load, and re-recording
+            // start values then captured the *end* state (map shown, globe at the surface) at scroll 0
             onRefresh: (self) => {
               marks.room = self.end;
               const tl = self.animation;
@@ -81,6 +82,7 @@ export function Arrival() {
             onUpdate: applyCam,
           });
 
+          gsap.set(J.map, { autoAlpha: 0 });
           tl.to(
             proxy,
             {
@@ -115,7 +117,9 @@ export function Arrival() {
 
           // through the clouds → the map
           tl.fromTo(J.fog, { opacity: 0 }, { opacity: 1, duration: 1.1, ease: 'power1.in' }, 6.3)
-            .set(J.map, { autoAlpha: 1 }, 7.3)
+            // explicit start state: Safari can run this before the stylesheet hides the map,
+            // so a bare .set() recorded 'visible' as the state to return to
+            .fromTo(J.map, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.001, immediateRender: false }, 7.3)
             .set(J.root.querySelector('.journey__canvas'), { autoAlpha: 0 }, 7.4)
             .to(J.fog, { opacity: 0, duration: 1, ease: 'power1.out' }, 7.5)
             .fromTo(J.states, { opacity: 0 }, { opacity: 1, stagger: { each: 0.014, from: 'random' }, duration: 0.6 }, 7.4)

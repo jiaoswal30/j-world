@@ -130,6 +130,7 @@ export class Globe {
   private cloudMesh?: THREE.Mesh;
   private cloudMat?: THREE.ShaderMaterial;
   private puffs: THREE.Sprite[] = [];
+  private stars?: THREE.Points;
   private progress = 0;
   private raf = 0;
   private running = false;
@@ -221,7 +222,7 @@ export class Globe {
     }
     const geo = new THREE.BufferGeometry();
     geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    const stars = new THREE.Points(geo, new THREE.PointsMaterial({ color: 0xdfe6ff, size: 0.07, sizeAttenuation: true, transparent: true, opacity: 0.85 }));
+    const stars = (this.stars = new THREE.Points(geo, new THREE.PointsMaterial({ color: 0xdfe6ff, size: 0.07, sizeAttenuation: true, transparent: true, opacity: 0.85 })));
     this.scene.add(stars);
   }
 
@@ -270,6 +271,8 @@ export class Globe {
     this.earth.rotation.set(lerp(0.08, TARGET_PITCH, k), TARGET_YAW - 2.2 * free + this.idle * free, 0.28 * free);
     if (this.cloudMesh) this.cloudMesh.rotation.y = this.idle * 0.18 * free + 0.02;
 
+    // WebKit shatters point sprites into coloured confetti up close; they're unseen in the dive anyway
+    if (this.stars) this.stars.visible = p < 0.45;
     this.sunDir.copy(this.sunDay).lerp(this.sunDusk, smooth(0.05, 0.55, p)).normalize();
 
     // dolly: far → orbit → just above the cloud deck
