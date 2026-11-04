@@ -483,7 +483,7 @@ export const lastTrack = {
   plan: {
     head: 'My first 30 days at Wispr Flow',
     steps: [
-      { when: 'Week 1', what: 'Live in Flow', detail: 'Use it for every email, DM and doc, and log every moment of friction. A new user\'s first week is the product.' },
+      { when: 'Week 1', what: 'Arrive with a teardown', detail: 'I already run my work through Flow. Day one, I bring a power user\'s map of every moment it wins someone over — and three growth experiments ready to launch that week.' },
       { when: 'Week 2', what: 'Talk to 30 users', detail: 'Students, founders and creators in India. Find the one sentence people use to describe Flow to a friend — that line is the campaign.' },
       { when: 'Week 3', what: 'Ship small experiments', detail: 'Short-form videos of real workflows — writing, coding, replying to DMs. Measure which hook gets someone to try it, not just watch it.' },
       { when: 'Week 4', what: 'Fix one leak', detail: 'Map the loop from first dictation to day two to week two, find where people drop, and test one fix at a time.' },

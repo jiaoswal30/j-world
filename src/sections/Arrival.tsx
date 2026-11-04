@@ -3,16 +3,14 @@ import { gsap, ScrollTrigger, useGSAP } from '../lib/gsap';
 import { marks, prefersReducedMotion, scrollToTarget } from '../lib/scroll';
 import { rich } from '../lib/rich';
 import { room, type Track } from '../content/site';
-import { StoreExterior, type DoorRefs } from '../components/StoreExterior';
-import { RoomArt } from '../components/ListeningRoom';
-import { Turntable, ARM_PLAYING, type TurntableHandle } from '../components/Turntable';
-import { LampPost, Chalkboard } from '../components/Foreground';
+import { ARM_PLAYING } from '../components/Turntable';
+import { StoreLayer, type StoreHandle } from '../components/StoreLayer';
 import { RecordCollection } from '../components/RecordCollection';
 import { Journey, type JourneyHandle } from '../components/Journey';
 import { SafeBoundary } from '../components/SafeBoundary';
 
-/** Point on the facade the camera dollies into: the centre of the doorway. */
-const DOOR_ORIGIN = '50% 74.75%';
+/** Timeline time when the prologue's aperture starts opening onto the store. */
+const STORE_VISIBLE_AT = 11.2;
 
 /**
  * Prologue + Scenes 01–03: Earth → Bengaluru → the street → the doors → the room.
@@ -20,20 +18,11 @@ const DOOR_ORIGIN = '50% 74.75%';
  */
 export function Arrival() {
   const root = useRef<HTMLElement>(null);
-  const exteriorLayer = useRef<HTMLDivElement>(null);
-  const camera = useRef<HTMLDivElement>(null);
-  const interior = useRef<HTMLDivElement>(null);
-  const vignette = useRef<HTMLDivElement>(null);
-  const lamp = useRef<HTMLDivElement>(null);
-  const board = useRef<HTMLDivElement>(null);
   const hint = useRef<HTMLDivElement>(null);
   const card = useRef<HTMLDivElement>(null);
   const rail = useRef<HTMLDivElement>(null);
-  const doorway = useRef<HTMLDivElement>(null);
-  const bloom = useRef<HTMLDivElement>(null);
   const journey = useRef<JourneyHandle | null>(null);
-  const doors = useRef<DoorRefs>({ left: null, right: null });
-  const tt = useRef<TurntableHandle | null>(null);
+  const tt = useRef<StoreHandle | null>(null);
   const busy = useRef(false);
   const [now, setNow] = useState<Track | null>(null);
 
@@ -44,6 +33,10 @@ export function Arrival() {
       mm.add('(prefers-reduced-motion: no-preference)', () => {
         const railItems = rail.current!.querySelectorAll('.rail__item');
         const caption = rail.current!.querySelector('.rail__caption');
+
+        let inView = false;
+        let pastPrologue = false;
+        const syncActive = () => tt.current?.setActive(inView && pastPrologue);
 
         const tl = gsap.timeline({
           defaults: { ease: 'none' },
@@ -56,6 +49,13 @@ export function Arrival() {
             anticipatePin: 1,
             // no invalidateOnRefresh: Safari re-measures after fonts/images load, and re-recording
             // start values then captured the *end* state (map shown, globe at the surface) at scroll 0
+            onUpdate: () => {
+              const past = tl.time() >= STORE_VISIBLE_AT;
+              if (past !== pastPrologue) {
+                pastPrologue = past;
+                syncActive();
+              }
+            },
             onRefresh: (self) => {
               marks.room = self.end;
               const tl = self.animation;
@@ -140,22 +140,10 @@ export function Arrival() {
 
         // ── THE STREET → THE ROOM ──
         const S = 'store';
+        // one camera move in 3D: outside the glass front → doors swing in → at the listening bar
+        const walk = { p: 0 };
         tl.to(hint.current, { autoAlpha: 0, y: 12, duration: 0.6 }, `${S}+=0.4`)
-          .to(camera.current, { scale: 2.4, duration: 5, ease: 'power1.in' }, S)
-          .to(lamp.current, { xPercent: -90, scale: 1.5, duration: 4, ease: 'power1.in' }, S)
-          .to(board.current, { xPercent: 90, yPercent: 40, scale: 1.7, duration: 4, ease: 'power1.in' }, S)
-          .to(board.current, { autoAlpha: 0, duration: 1 }, `${S}+=3`)
-          .to(lamp.current, { autoAlpha: 0, duration: 1 }, `${S}+=3`)
-          .to(vignette.current, { opacity: 1, duration: 4.5 }, S)
-          .to(doors.current.left, { rotationY: 84, duration: 3, ease: 'power2.inOut' }, `${S}+=2`)
-          .to(doors.current.right, { rotationY: -84, duration: 3, ease: 'power2.inOut' }, `${S}+=2`)
-          // step over the threshold: warm light swallows the frame, the room is on the other side
-          .to(camera.current, { scale: 4.6, duration: 2.4, ease: 'power2.in' }, `${S}+=5`)
-          .fromTo(bloom.current, { opacity: 0 }, { opacity: 1, duration: 1.6, ease: 'power2.in' }, `${S}+=5.6`)
-          .to(exteriorLayer.current, { autoAlpha: 0, duration: 0.3 }, `${S}+=7.1`)
-          .to(vignette.current, { opacity: 0, duration: 0.6 }, `${S}+=6.7`)
-          .fromTo(interior.current, { scale: 1.18 }, { scale: 1, duration: 2.6, ease: 'power2.out' }, `${S}+=6.9`)
-          .to(bloom.current, { opacity: 0, duration: 1.5, ease: 'power2.out' }, `${S}+=7.3`)
+          .to(walk, { p: 1, duration: 7.6, ease: 'none', onUpdate: () => tt.current?.setProgress(walk.p) }, S)
           .fromTo(card.current, { autoAlpha: 0, y: 40, rotation: -5 }, { autoAlpha: 1, y: 0, rotation: -0.8, duration: 1.4, ease: 'power3.out' }, `${S}+=8.2`)
           .fromTo(railItems, { autoAlpha: 0, y: 90 }, { autoAlpha: 1, y: 0, stagger: 0.14, duration: 1.2, ease: 'power3.out' }, `${S}+=8.6`)
           .fromTo(caption, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.8 }, `${S}+=9.4`)
@@ -167,6 +155,8 @@ export function Arrival() {
           start: 'top bottom',
           end: 'bottom top',
           onToggle: (self) => {
+            inView = self.isActive;
+            syncActive();
             const spin = tt.current?.spin;
             if (!spin) return;
             if (self.isActive) spin.play();
@@ -255,10 +245,11 @@ export function Arrival() {
 
   return (
     <section className="arrival" ref={root} id="top" aria-label="Jia's World — from Earth to the Listening Room">
-      <div className="arrival__layer arrival__interior" ref={interior} style={{ transformOrigin: DOOR_ORIGIN }}>
-        <div className="stage">
-          <RoomArt />
-          <Turntable ref={tt} now={now} />
+      <div className="arrival__layer arrival__store">
+        <StoreLayer ref={tt} now={now} />
+        <div className="scroll-hint" ref={hint}>
+          <span className="mono">Scroll to come in</span>
+          <span className="scroll-hint__line" aria-hidden="true" />
         </div>
       </div>
 
@@ -269,20 +260,6 @@ export function Arrival() {
           <h2 className="room-card__statement">{rich(room.statement)}</h2>
         </div>
         <RecordCollection onPlay={play} railRef={rail} />
-      </div>
-
-      <div className="arrival__layer arrival__exterior" ref={exteriorLayer}>
-        <div className="stage" ref={camera} style={{ transformOrigin: DOOR_ORIGIN }}>
-          <StoreExterior doorsRef={doorway} doorRefs={doors} />
-        </div>
-        <div className="arrival__vignette" ref={vignette} />
-        <div className="arrival__bloom" ref={bloom} />
-        <LampPost ref={lamp} />
-        <Chalkboard ref={board} />
-        <div className="scroll-hint" ref={hint}>
-          <span className="mono">Scroll to come in</span>
-          <span className="scroll-hint__line" aria-hidden="true" />
-        </div>
       </div>
 
       <div className="arrival__layer arrival__journey">

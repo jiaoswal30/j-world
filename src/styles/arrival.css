@@ -22,6 +22,24 @@
   z-index: 1;
   background: #d9cbae;
 }
+.arrival__store {
+  z-index: 1;
+  background: #0a0c15;
+}
+.store3d {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.store3d__platter {
+  position: absolute;
+  pointer-events: none;
+}
+.arrival__store .scroll-hint {
+  z-index: 1;
+}
 .arrival__room-ui {
   z-index: 2;
   pointer-events: none;
@@ -775,6 +793,7 @@
   .arrival__journey { order: 0; }
   .arrival__exterior { order: 1; }
   .arrival__interior { order: 2; }
+  .arrival__store { order: 2; }
   .arrival__room-ui { order: 3; margin-top: -100svh; }
   .journey__map, .captions { display: none; }
   .scroll-hint { display: none; }

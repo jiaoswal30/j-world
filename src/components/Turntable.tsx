@@ -3,10 +3,11 @@ import { gsap, useGSAP } from '../lib/gsap';
 import { Vinyl } from './Vinyl';
 import type { Track } from '../content/site';
 
+/** What the record-play sequence drives: a DOM rect to land on, plus tween targets. */
 export type TurntableHandle = {
-  platter: HTMLDivElement;
-  record: HTMLDivElement;
-  arm: HTMLDivElement;
+  platter: HTMLElement;
+  record: object;
+  arm: object;
   spin: gsap.core.Tween;
 };
 
