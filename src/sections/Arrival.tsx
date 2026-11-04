@@ -45,7 +45,7 @@ export function Arrival() {
             start: 'top top',
             end: () => `+=${Math.round(window.innerHeight * 6.6)}`,
             pin: true,
-            scrub: 0.8,
+            scrub: 1.2, // a touch more catch-up = the pinned story glides instead of tracking every wheel tick
             anticipatePin: 1,
             // no invalidateOnRefresh: Safari re-measures after fonts/images load, and re-recording
             // start values then captured the *end* state (map shown, globe at the surface) at scroll 0

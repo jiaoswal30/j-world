@@ -151,26 +151,41 @@ export class Globe {
     this.addStars();
   }
 
+  /** Swapped in as the full-resolution textures arrive. */
+  private earthMat?: THREE.ShaderMaterial;
+
+  /**
+   * Two stages so the Earth is on screen almost at once: a light 1K day map
+   * builds the whole scene, then the 2K day map, city lights, oceans and
+   * clouds stream in behind it and are swapped in without a frame of black.
+   */
   async load() {
     const loader = new THREE.TextureLoader();
-    const [day, night, spec, clouds] = await Promise.all(
-      ['/earth/earth_atmos_2048.jpg', '/earth/earth_lights_2048.png', '/earth/earth_specular_2048.jpg', '/earth/earth_clouds_1024.png'].map((u) =>
-        loader.loadAsync(asset(u)),
-      ),
-    );
-    day.colorSpace = THREE.SRGBColorSpace;
-    night.colorSpace = THREE.SRGBColorSpace;
     const aniso = this.renderer.capabilities.getMaxAnisotropy();
-    [day, night, spec, clouds].forEach((t) => (t.anisotropy = aniso));
+    const prep = (t: THREE.Texture, srgb = false) => {
+      if (srgb) t.colorSpace = THREE.SRGBColorSpace;
+      t.anisotropy = aniso;
+      return t;
+    };
+    const px = (r: number, g: number, b: number, a: number) => {
+      const t = new THREE.DataTexture(new Uint8Array([r, g, b, a]), 1, 1);
+      t.needsUpdate = true;
+      return t;
+    };
+    const day = prep(await loader.loadAsync(asset('/earth/earth_atmos_1024.jpg')), true);
+    // placeholders: no city lights, no ocean glint, no clouds — until the real maps land
+    const night = px(0, 0, 0, 255);
+    const spec = px(0, 0, 0, 255);
+    const clouds = px(0, 0, 0, 0);
 
     // The sun sets as we descend: daylight on the opening frame, dusk over Bengaluru.
     const sunDir = this.sunDir;
 
-    const earthMat = new THREE.ShaderMaterial({
+    const earthMat = (this.earthMat = new THREE.ShaderMaterial({
       uniforms: { dayMap: { value: day }, nightMap: { value: night }, specMap: { value: spec }, sunDir: { value: sunDir } },
       vertexShader: EARTH_VERT,
       fragmentShader: EARTH_FRAG,
-    });
+    }));
     this.earth.add(new THREE.Mesh(new THREE.SphereGeometry(1, 160, 160), earthMat));
 
     this.cloudMat = new THREE.ShaderMaterial({
@@ -211,6 +226,36 @@ export class Globe {
 
     this.ready = true;
     this.render();
+    this.loadFull(loader, prep);
+  }
+
+  private disposed = false;
+  private cloudsAt = -1e9;
+
+  private loadFull(loader: THREE.TextureLoader, prep: (t: THREE.Texture, srgb?: boolean) => THREE.Texture) {
+    const swap = (url: string, apply: (t: THREE.Texture) => void, srgb = false) =>
+      loader
+        .loadAsync(asset(url))
+        .then((t) => {
+          if (this.disposed) return t.dispose();
+          apply(prep(t, srgb));
+          if (!this.running) this.render();
+        })
+        .catch(() => {}); // the 1K globe is a perfectly good Earth if a detail map fails
+    const u = this.earthMat!.uniforms;
+    const set = (k: string) => (t: THREE.Texture) => {
+      (u[k].value as THREE.Texture).dispose();
+      u[k].value = t;
+    };
+    swap('/earth/earth_clouds_1024.png', (t) => {
+      (this.cloudMat!.uniforms.cloudMap.value as THREE.Texture).dispose();
+      this.cloudMat!.uniforms.cloudMap.value = t;
+      // drift the weather in rather than popping it on (instant if nothing is animating)
+      this.cloudsAt = this.running ? performance.now() : -1e9;
+    });
+    swap('/earth/earth_atmos_2048.jpg', set('dayMap'), true);
+    swap('/earth/earth_lights_2048.jpg', set('nightMap'), true);
+    swap('/earth/earth_specular_2048.jpg', set('specMap'));
   }
 
   private addStars() {
@@ -283,7 +328,7 @@ export class Globe {
     this.camera.lookAt(0, lift, 0);
 
     // fade the cloud sphere as we enter it; bring up the puffs
-    if (this.cloudMat) this.cloudMat.uniforms.fade.value = 1 - smooth(0.72, 0.86, p) * 0.7;
+    if (this.cloudMat) this.cloudMat.uniforms.fade.value = (1 - smooth(0.72, 0.86, p) * 0.7) * clamp01((performance.now() - this.cloudsAt) / 1200);
     const puffs = smooth(0.58, 0.7, p) * (1 - smooth(0.9, 0.97, p));
     for (const s of this.puffs) s.material.opacity = puffs * 0.9;
 
@@ -291,6 +336,7 @@ export class Globe {
   }
 
   dispose() {
+    this.disposed = true;
     this.stop();
     this.scene.traverse((o) => {
       const m = o as THREE.Mesh;

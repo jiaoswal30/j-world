@@ -24,6 +24,12 @@ export type JourneyHandle = {
 
 const VB = { w: 612, h: 696 };
 
+// Fetch three.js the moment this module runs, not after React mounts and effects fire —
+// the opening shot is the first thing anyone sees, so it can't wait in line.
+let globeChunk: Promise<typeof import('./Globe')> | null = null;
+const loadGlobe = () => (globeChunk ??= import('./Globe'));
+if (typeof window !== 'undefined') loadGlobe().catch(() => {});
+
 /** Small 4-point sparkle, the star from the edit references. */
 export function Sparkle({ className = '' }: { className?: string }) {
   return (
@@ -117,7 +123,7 @@ export const Journey = forwardRef<JourneyHandle | null>(function Journey(_, ref)
       return;
     }
     // three.js loads in its own chunk so the page shell paints first
-    import('./Globe')
+    loadGlobe()
       .then(({ Globe: G }) => {
         if (cancelled) return;
         g = new G(canvas.current!);
@@ -194,7 +200,7 @@ export const Journey = forwardRef<JourneyHandle | null>(function Journey(_, ref)
   return (
     <div className="journey" ref={root}>
       <canvas className="journey__canvas" ref={canvas} aria-hidden="true" />
-      {noGl && <div className="journey__fallback" aria-hidden="true" style={{ backgroundImage: `url(${asset('/earth/earth_atmos_2048.jpg')})` }} />}
+      {noGl && <div className="journey__fallback" aria-hidden="true" style={{ backgroundImage: `url(${asset('/earth/earth_atmos_1024.jpg')})` }} />}
 
       <div className="journey__fog" ref={fog} aria-hidden="true" />
 

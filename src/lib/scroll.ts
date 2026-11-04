@@ -13,7 +13,8 @@ const easeInOutQuart = (t: number) => (t < 0.5 ? 8 * t * t * t * t : 1 - Math.po
 
 export function initScroll() {
   if (prefersReducedMotion()) return () => {};
-  lenis = new Lenis({ lerp: 0.085, wheelMultiplier: 0.9, smoothWheel: true });
+  // a lower lerp = a longer, silkier glide after each wheel tick
+  lenis = new Lenis({ lerp: 0.065, wheelMultiplier: 1, smoothWheel: true, syncTouch: false });
   lenis.on('scroll', ScrollTrigger.update);
   const raf = (time: number) => lenis?.raf(time * 1000);
   gsap.ticker.add(raf);
