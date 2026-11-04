@@ -4,7 +4,7 @@ import { marks, prefersReducedMotion, scrollToTarget } from '../lib/scroll';
 import { rich } from '../lib/rich';
 import { room, type Track } from '../content/site';
 import { StoreExterior, type DoorRefs } from '../components/StoreExterior';
-import { RoomArt, RingText } from '../components/ListeningRoom';
+import { RoomArt } from '../components/ListeningRoom';
 import { Turntable, ARM_PLAYING, type TurntableHandle } from '../components/Turntable';
 import { LampPost, Chalkboard } from '../components/Foreground';
 import { RecordCollection } from '../components/RecordCollection';
@@ -156,7 +156,7 @@ export function Arrival() {
           .to(vignette.current, { opacity: 0, duration: 0.6 }, `${S}+=6.7`)
           .fromTo(interior.current, { scale: 1.18 }, { scale: 1, duration: 2.6, ease: 'power2.out' }, `${S}+=6.9`)
           .to(bloom.current, { opacity: 0, duration: 1.5, ease: 'power2.out' }, `${S}+=7.3`)
-          .fromTo(card.current, { autoAlpha: 0, y: 40, rotation: -5 }, { autoAlpha: 1, y: 0, rotation: -1.5, duration: 1.4, ease: 'power3.out' }, `${S}+=8.2`)
+          .fromTo(card.current, { autoAlpha: 0, y: 40, rotation: -5 }, { autoAlpha: 1, y: 0, rotation: -0.8, duration: 1.4, ease: 'power3.out' }, `${S}+=8.2`)
           .fromTo(railItems, { autoAlpha: 0, y: 90 }, { autoAlpha: 1, y: 0, stagger: 0.14, duration: 1.2, ease: 'power3.out' }, `${S}+=8.6`)
           .fromTo(caption, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.8 }, `${S}+=9.4`)
           .to({}, { duration: 0.8 });
@@ -258,7 +258,6 @@ export function Arrival() {
       <div className="arrival__layer arrival__interior" ref={interior} style={{ transformOrigin: DOOR_ORIGIN }}>
         <div className="stage">
           <RoomArt />
-          <RingText />
           <Turntable ref={tt} now={now} />
         </div>
       </div>

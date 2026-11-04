@@ -15,8 +15,9 @@ const C = {
   leaf: '#3E5A3F',
 };
 
+// tonal spines (walnut, oxblood, paper) with a rare accent — a curated shelf, not a rainbow
 const SPINE_COLOURS = [
-  C.ink, C.ink, C.oxblood, C.oxblood2, C.saffron, C.paper, '#D8CDB4', C.cobalt, C.celadon, C.celadonDeep, '#C9B8E8', '#2B3A5C', '#8C5A3C',
+  '#2A1E19', '#3A2A22', C.walnut, C.walnut, '#6B4430', '#8C5A3C', C.oxblood, C.oxblood, '#B79A74', '#D8CDB4', '#E6DCC6', C.celadonDeep, C.ink,
 ];
 
 type Rect = { x: number; y: number; w: number; h: number; fill: string; r?: number; band?: string };
@@ -174,22 +175,6 @@ export function RoomArt() {
       <Bay x0={44} x1={466} seed={7} />
       <Bay x0={1134} x1={1556} seed={23} />
 
-      {/* small framed prints */}
-      <rect x="486" y="148" width="76" height="108" fill={C.ink} />
-      <rect x="492" y="154" width="64" height="96" fill={C.oxblood} />
-      <text x="524" y="214" textAnchor="middle" fontFamily="Gloock, serif" fontSize="30" fill={C.saffron}>33⅓</text>
-      <text x="524" y="238" textAnchor="middle" fontFamily="IBM Plex Mono, monospace" fontSize="6" letterSpacing="1.5" fill={C.paper}>RPM · LOUD</text>
-      <rect x="1038" y="168" width="76" height="100" fill={C.ink} />
-      <rect x="1044" y="174" width="64" height="88" fill={C.paper} />
-      <circle cx="1076" cy="206" r="20" fill="none" stroke={C.cobalt} strokeWidth="3" />
-      <circle cx="1076" cy="206" r="9" fill={C.cobalt} />
-      <rect x="1052" y="240" width="48" height="4" fill={C.oxblood} />
-      <g transform="rotate(5 1078 310)">
-        <rect x="1046" y="292" width="66" height="40" fill="#F6F1E6" />
-        <rect x="1070" y="288" width="18" height="8" fill="rgba(224,164,58,.6)" />
-        <text x="1079" y="318" textAnchor="middle" fontFamily="Reenie Beanie, cursive" fontSize="17" fill={C.ink}>play it loud</text>
-      </g>
-
       {/* pendant lamps */}
       {[640, 960].map((x) => (
         <g key={x}>
@@ -204,7 +189,7 @@ export function RoomArt() {
       {/* floor */}
       <rect y="760" width="1600" height="240" fill={C.paper} />
       {floor.map((t, i) => (
-        <path key={i} d={t.d} fill={t.dark ? C.oxblood : '#E9DFC9'} />
+        <path key={i} d={t.d} fill={t.dark ? '#7B4542' : '#E6DAC4'} />
       ))}
       <rect y="760" width="1600" height="240" fill={u('floorShade')} />
       <rect y="758" width="1600" height="6" fill={C.walnut} />
@@ -225,23 +210,6 @@ export function RoomArt() {
       <path d="M424 476 Q470 404 516 476 Z" fill={C.saffron} />
       <ellipse cx="470" cy="476" rx="46" ry="5" fill="#FFF0C4" />
 
-      {/* receipt spike */}
-      <line x1="580" y1="492" x2="580" y2="545" stroke={C.ink} strokeWidth="2" />
-      <ellipse cx="580" cy="544" rx="14" ry="3" fill={C.ink} />
-      {[0, 1, 2].map((k) => (
-        <rect key={k} x={562 + k * 2} y={512 + k * 9} width="36" height="22" fill="#F6F1E6" stroke="#D3C7AE" strokeWidth="0.6" transform={`rotate(${[-8, 6, -3][k]} 580 ${523 + k * 9})`} />
-      ))}
-
-      {/* sleeves leaning on the counter */}
-      <g transform="rotate(-9 1010 545)">
-        <rect x="1010" y="455" width="90" height="90" fill={C.celadon} />
-        <circle cx="1055" cy="500" r="26" fill={C.ink} />
-      </g>
-      <g transform="rotate(-4 1040 545)">
-        <rect x="1036" y="459" width="86" height="86" fill={C.paper} />
-        <rect x="1036" y="459" width="86" height="30" fill={C.cobalt} />
-      </g>
-
       {/* plant */}
       <path d="M1150 495 H1200 L1194 545 H1156 Z" fill={C.oxblood2} />
       {[
@@ -255,27 +223,7 @@ export function RoomArt() {
         <ellipse key={i} cx={cx} cy={cy} rx={rx} ry={ry} fill={i % 2 ? C.leaf : C.celadonDeep} transform={`rotate(${r} ${cx} ${cy})`} />
       ))}
 
-      {/* headphones on a hook */}
-      <rect x="1146" y="580" width="12" height="6" fill="#B07422" />
-      <path d="M1130 640 Q1130 588 1152 588 Q1174 588 1174 640" fill="none" stroke={C.ink} strokeWidth="6" />
-      <rect x="1121" y="628" width="18" height="30" rx="5" fill={C.ink} />
-      <rect x="1165" y="628" width="18" height="30" rx="5" fill={C.ink} />
     </svg>
   );
 }
 
-/** The ring of type around the cobalt disc — its own layer so it can turn without repainting the room. */
-export function RingText() {
-  return (
-    <svg className="ring-text" viewBox="0 0 470 470" aria-hidden="true">
-      <defs>
-        <path id="ring-path" d="M235 235 m-222 0 a222 222 0 1 1 444 0 a222 222 0 1 1 -444 0" />
-      </defs>
-      <text fontFamily="IBM Plex Mono, monospace" fontSize="12.5" letterSpacing="6.2" fill="#EFE7D6" opacity="0.75">
-        <textPath href="#ring-path">
-          THE LISTENING ROOM · VOL. 01 · SIDE A · SIDE B · PLAYED LOUD · MADE IN BENGALURU · THE LISTENING ROOM · VOL. 01 ·
-        </textPath>
-      </text>
-    </svg>
-  );
-}

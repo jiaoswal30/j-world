@@ -95,7 +95,7 @@ export const about = {
     "I'm an entrepreneurship student at Mesa School of Business in Bengaluru — which mostly means I've given myself permission to be curious about everything, and then held myself responsible for doing something about it.",
   body: [
     "Right now I'm living in the overlap of AI, design and technology. I like pulling things apart to see how they work — a brand, an app, a checkout flow, a campaign — and then building my own version to find out what I actually understood.",
-    "I'm not going to pretend I've got it figured out. What I do have is a habit of starting, an eye for when something feels slightly off, and a growing respect for the unglamorous part: finishing, shipping, following through. I'm deliberately getting better at that last bit.",
+    "What I bring is a habit of shipping. I start fast, I notice when something feels slightly off, and I see it through: Kaha's website is live, Jalsa runs on a real backend, and Hum Bawaal went from twenty-plus concepts to a launch-ready drop. The questions I'm still exploring, I explore by building.",
   ],
   filedUnder: [
     'Entrepreneurship',
@@ -449,8 +449,8 @@ export const note = {
       body: "Design isn't the colour of the button. It's whether someone understands what to do, trusts you enough to do it, and wants to come back. That's why I think design and growth sit closer together than they look: a confusing onboarding screen is a design problem and a retention problem at the same time.",
     },
     {
-      head: 'On getting better',
-      body: "The honest list: consistency, finishing, and saying no to the fifth new idea while the first one is still half-built. I'm better at starting than ending. I'm working on it the only way I know — by picking things with deadlines, making them public, and letting the result show whether I followed through. This site is one of those.",
+      head: "On what's next",
+      body: "Building isn't the hard part any more — I've shipped a website for a real showroom, an AI app with a real backend, and a brand from concept to drop. What I'm sharpening now is range: GSAP, Three.js and shaders for web experiences that stop people mid-scroll, and the growth side — how distribution, habit and community turn good work into used work. Same method as always: pick something with a deadline, make it public, and let the result speak. This site is one of those.",
       margin: "this one's for me",
     },
   ],
@@ -463,12 +463,32 @@ export const lastTrack = {
   kicker: 'Side B · Track 5',
   statement: 'Growth is where taste has to answer to numbers. That is the room I want to work in.',
   body: [
-    "I'm drawn to growth because it's the one place a creative idea doesn't get to hide. You can make something beautiful, and the funnel will tell you — politely — whether anyone cared.",
-    'What I want to understand: how a product turns into a habit, how a brand turns an audience into a community, and how distribution quietly decides which good products win.',
-    "Wispr Flow is an interesting place to learn that. Getting someone to talk to their computer instead of typing isn't a feature problem — it's a habit problem, a trust problem and a storytelling problem. I'd like to work on all three.",
+    "I'm drawn to growth because it's the one place a creative idea doesn't get to hide. You can make something beautiful, and the numbers tell you — politely — whether anyone cared. I'd rather be judged by that.",
+    "Wispr Flow asks people to do something new: talk to their computer instead of typing. That isn't a feature problem — it's a habit problem, a trust problem and a storytelling problem. I've spent the last year working on exactly those three, in smaller rooms: getting strangers to say yes on a cold call, getting a showroom's visitors to book an hour, getting guests to RSVP in one tap.",
+    "India already talks to its phone — voice notes are how a lot of us say anything that matters. Turning that habit into a Flow habit is the growth story I want to help write.",
   ],
-  bring: ['Curiosity', 'Initiative', 'A bias for running the experiment instead of debating it', 'The habit of making the thing, so we argue about something real'],
-  notBringing: 'The pretence that I already know everything. I would rather learn it on the job, with numbers attached.',
+  bring: [
+    'Sales grit — I have done the calls, not just read about funnels',
+    'Builder hands — I can prototype the experiment myself, today',
+    'Content instinct — shorts, campaigns and copy that earn the next scroll',
+    'Taste that ships — the room you are standing in, live in days',
+  ],
+  proof: [
+    { verb: 'Sold', line: '~50 cold calls a day at PONGS; 15+ architect meetings, 10+ converted.' },
+    { verb: 'Shipped', line: 'kahadiamonds.com, Instagram shorts and an ERP app used by a real showroom team.' },
+    { verb: 'Built', line: 'Jalsa — an AI invitation app on Supabase with a secured public AI endpoint.' },
+    { verb: 'Founded', line: 'Hum Bawaal, NeerRatna and RapidFunds — three things taken from zero.' },
+    { verb: 'Directed', line: 'This portfolio — dictated out loud with Wispr Flow, built end to end.' },
+  ],
+  plan: {
+    head: 'My first 30 days at Wispr Flow',
+    steps: [
+      { when: 'Week 1', what: 'Live in Flow', detail: 'Use it for every email, DM and doc, and log every moment of friction. A new user\'s first week is the product.' },
+      { when: 'Week 2', what: 'Talk to 30 users', detail: 'Students, founders and creators in India. Find the one sentence people use to describe Flow to a friend — that line is the campaign.' },
+      { when: 'Week 3', what: 'Ship small experiments', detail: 'Short-form videos of real workflows — writing, coding, replying to DMs. Measure which hook gets someone to try it, not just watch it.' },
+      { when: 'Week 4', what: 'Fix one leak', detail: 'Map the loop from first dictation to day two to week two, find where people drop, and test one fix at a time.' },
+    ],
+  },
   credits: [
     { role: 'Concept, direction & words', who: 'Jia Oswal' },
     { role: 'Directed out loud', who: 'Dictated with Wispr Flow' },

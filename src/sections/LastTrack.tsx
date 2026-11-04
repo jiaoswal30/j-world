@@ -177,15 +177,37 @@ export function LastTrack() {
                 </li>
               ))}
             </ol>
-            <p className="bring__not">
-              <span className="mono">Not bringing</span> {lastTrack.notBringing}
-            </p>
           </div>
 
           <Contact />
         </div>
 
         <RunOut />
+      </div>
+
+      <div className="proof" data-rise>
+        <p className="mono proof__head">The receipts, in one place</p>
+        <ul className="proof__list">
+          {lastTrack.proof.map((p) => (
+            <li key={p.verb} className="proof__item">
+              <span className="proof__verb">{p.verb}</span>
+              <span className="proof__line">{p.line}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="plan" data-rise>
+        <h3 className="plan__head">{lastTrack.plan.head}</h3>
+        <ol className="plan__list">
+          {lastTrack.plan.steps.map((st) => (
+            <li key={st.when} className="plan__step">
+              <span className="mono plan__when">{st.when}</span>
+              <span className="plan__what">{st.what}</span>
+              <span className="plan__detail">{st.detail}</span>
+            </li>
+          ))}
+        </ol>
       </div>
 
       <footer className="credits">
