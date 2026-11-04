@@ -39,7 +39,7 @@ export const person = {
 export const journey = {
   heading: 'The portfolio of Jia Oswal · Vol. 01',
   word: "Jia's World",
-  sub: "Things I've made, things I've questioned, and a few I haven't figured out yet.",
+  sub: "Things I've made, things I'm making, and the questions I'm building toward.",
   captions: [
     'Somewhere on a small blue planet…',
     '…past the side of it where the cities stay lit,',
@@ -50,7 +50,7 @@ export const journey = {
 };
 
 export const exterior = {
-  chalkboard: "Inside: things I've made, things I've questioned, and a few I haven't figured out yet.",
+  chalkboard: "Inside: things I've made, things I'm making, and the questions I'm building toward.",
   chalkSign: '— J.',
   doorSign: ['Open', "come in, it's warm"],
 };
@@ -83,7 +83,7 @@ export const tracks: Track[] = [
   { id: 'work', ghost: 'built', code: 'B1', title: "Things I've Built", nav: 'Work', art: 'work', label: palette.cobalt, labelInk: palette.paper },
   { id: 'experiments', ghost: 'curious', code: 'B2', title: 'The Experiments', nav: 'Experiments', art: 'experiments', label: palette.celadon, labelInk: palette.ink },
   { id: 'gallery', ghost: 'edits', code: 'B3', title: 'The Crates', nav: 'Gallery', label: palette.paper, labelInk: palette.ink },
-  { id: 'note', code: 'B4', title: "Things I'm Still Figuring Out", nav: 'Liner note', label: palette.paper, labelInk: palette.ink },
+  { id: 'note', code: 'B4', title: 'Signal, from Noise', nav: 'Field notes', label: palette.paper, labelInk: palette.ink },
   { id: 'contact', code: 'B5', title: 'The Last Track', nav: 'Contact', art: 'last', label: palette.paper, labelInk: palette.oxblood },
 ];
 
@@ -352,7 +352,7 @@ export const experiments: Experiment[] = [
   {
     filed: 'Trading',
     question: 'What can markets teach you about risk, patience and being wrong?',
-    note: 'Learning to trade — mostly learning to sit with uncertainty.',
+    note: 'Learning to trade — position sizing, patience, and being wrong cheaply.',
     status: 'learning',
   },
   {
@@ -424,34 +424,42 @@ export const gallery: Plate[] = [
   { src: '/work/jalsa-upcoming.jpg', alt: 'Jalsa upcoming occasions', ratio: SCREEN, title: 'Jalsa', caption: 'upcoming — your circle', tone: 'cobalt' },
 ];
 
-/* ───────── B4 — The liner note (long-form) ───────── */
+/* ───────── B4 — Signal, from noise (field notes) ───────── */
 
 export const note = {
-  title: "Things I'm still figuring out.",
-  intro: 'Found tucked inside the sleeve. Five short thoughts, in no particular order of certainty.',
+  kicker: 'B4 · Field notes',
+  title: 'Signal, from noise.',
+  intro: "Five things I'm working out — by building, not by waiting. Run your cursor (or your thumb) through the noise.",
+  /** The word the field of characters assembles into. */
+  word: 'SIGNAL',
+  /** The characters the field is made of. */
+  stream: 'build ship test learn taste signal growth habit trust story range design ai judgement execute iterate launch measure ',
   parts: [
     {
-      head: 'On building',
-      body: "I like building things because it's the fastest way to find out I was wrong. An idea in my head is always perfect. The same idea on a screen immediately has a spacing problem, a button nobody understands, and a reason it maybe shouldn't exist. That isn't discouraging — it's information. Most of what I know, I learned from something I made that didn't work the first time.",
-      margin: 'still true',
+      head: 'Build to find out',
+      tag: 'On building',
+      body: "I build because it's the fastest way to find the truth. An idea in my head is always perfect; on a screen it immediately shows its spacing problem, its confusing button, its reason to exist — or not. That isn't discouraging, it's data. Everything I know, I learned by shipping something and watching what happened.",
     },
     {
-      head: 'On creativity and execution',
-      body: "There's a version of creativity that is mostly taste: knowing what's good, being able to point at it. I respect it, but I don't think it's enough. An idea that never ships is a mood board. And there's a version of execution that's all checklists, which ships things nobody remembers. The interesting work is in the overlap — caring how something feels *and* caring whether it got done by Thursday.",
+      head: 'Taste that ships',
+      tag: 'On creativity × execution',
+      body: "Taste on its own is a mood board. Execution on its own ships things nobody remembers. I work in the overlap — caring how something feels, and making sure it's live by Thursday.",
       pull: 'An idea that never ships is a mood board.',
     },
     {
-      head: 'On AI',
-      body: "I'm interested in AI less as a topic and more as a change in who gets to make things. Not long ago, building something like this room would have needed a team I didn't have. Now the bottleneck isn't the code — it's judgement: knowing what to ask for, noticing when the answer is generic, and having the nerve to throw it away and ask again. That's a skill. I'm trying to get good at it.",
+      head: 'Judgement is the new bottleneck',
+      tag: 'On AI',
+      body: "AI changed who gets to make things. A site like this once needed a team; now the bottleneck is judgement — knowing what to ask for, spotting the generic answer, and throwing it out until it's right. That's the skill I sharpen every day.",
     },
     {
-      head: 'On design, beyond how it looks',
-      body: "Design isn't the colour of the button. It's whether someone understands what to do, trusts you enough to do it, and wants to come back. That's why I think design and growth sit closer together than they look: a confusing onboarding screen is a design problem and a retention problem at the same time.",
+      head: 'Design is a growth lever',
+      tag: 'On design',
+      body: "Design isn't the colour of the button. It's whether someone understands what to do, trusts you enough to do it, and comes back tomorrow. A confusing onboarding screen is a design problem and a retention problem at once — which is exactly why I want to work on growth.",
     },
     {
-      head: "On what's next",
-      body: "Building isn't the hard part any more — I've shipped a website for a real showroom, an AI app with a real backend, and a brand from concept to drop. What I'm sharpening now is range: GSAP, Three.js and shaders for web experiences that stop people mid-scroll, and the growth side — how distribution, habit and community turn good work into used work. Same method as always: pick something with a deadline, make it public, and let the result speak. This site is one of those.",
-      margin: "this one's for me",
+      head: 'Range, next',
+      tag: "On what's next",
+      body: "I've shipped a showroom's website, an AI app with a real backend, and a brand from concept to drop. Next: GSAP, Three.js and shaders for web experiences that stop people mid-scroll — and the growth craft that turns good work into used work. Same method: a deadline, in public, and let the result speak.",
     },
   ],
   signoff: '— J.O., Bengaluru',

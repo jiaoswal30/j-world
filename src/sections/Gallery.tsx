@@ -35,7 +35,7 @@ export function Gallery() {
 
   return (
     <section className="section gallery" id="gallery" ref={ref}>
-      <SectionHead track={track} kicker="Side B · Track 3" intro="Printed things, pinned things, half-things. Pull a folder open to see the whole piece." />
+      <SectionHead track={track} kicker="Side B · Track 3" intro="Printed things, pinned things, things in production. Pull a folder open to see the whole piece." />
 
       <div className="folders" data-lenis-prevent-horizontal>
         <div className="folders__cover" aria-hidden="true">

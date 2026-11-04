@@ -78,7 +78,7 @@ export function Experiments() {
       <SectionHead
         track={track}
         kicker="Side B · Track 2"
-        intro="Not a list of software. A list of questions I'm currently carrying around — and how far into each one I've got."
+        intro="Not a list of software. The questions I'm actively working on — and how far I've pushed each one."
       />
       <div className="pegboard">
         {experiments.map((e, i) => (
