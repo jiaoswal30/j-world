@@ -22,7 +22,7 @@ export function Gallery() {
       mm.add('(prefers-reduced-motion: no-preference)', () => {
         gsap.from('.folder', {
           yPercent: 18,
-          autoAlpha: 0,
+          opacity: 0, // opacity only: hidden-by-visibility content would be unreachable by keyboard
           stagger: 0.08,
           duration: 1.1,
           ease: 'power3.out',

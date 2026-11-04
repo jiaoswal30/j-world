@@ -26,7 +26,7 @@ export function Editorial() {
         const h = t.querySelector<HTMLElement>('.ticket__head')!;
         gsap.from(t, {
           y: 40,
-          autoAlpha: 0,
+          opacity: 0, // opacity only: hidden-by-visibility content would be unreachable by keyboard
           duration: 0.9,
           ease: 'power3.out',
           scrollTrigger: { trigger: t, start: 'top 88%', once: true, onEnter: () => decode(h, 1.4) },

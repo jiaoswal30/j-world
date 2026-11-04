@@ -5,6 +5,7 @@ import { journey } from '../content/site';
 import { jazz, useJazz } from '../lib/jazz';
 import { prefersReducedMotion } from '../lib/scroll';
 import { asset } from '../lib/asset';
+import { hasWebGL } from '../lib/webgl';
 
 export type JourneyHandle = {
   root: HTMLDivElement;
@@ -110,6 +111,11 @@ export const Journey = forwardRef<JourneyHandle | null>(function Journey(_, ref)
       if (document.hidden) g.stop();
       else if (window.scrollY < window.innerHeight * 3 && !prefersReducedMotion()) g.start();
     };
+    // no WebGL (old device, disabled GPU): skip three.js entirely and use the CSS globe
+    if (!hasWebGL()) {
+      setNoGl(true);
+      return;
+    }
     // three.js loads in its own chunk so the page shell paints first
     import('./Globe')
       .then(({ Globe: G }) => {

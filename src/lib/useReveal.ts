@@ -32,7 +32,7 @@ export function useReveal(scope: RefObject<HTMLElement>) {
         gsap.utils.toArray<HTMLElement>('[data-rise]', root).forEach((el) => {
           gsap.from(el, {
             y: 34,
-            autoAlpha: 0,
+            opacity: 0, // opacity only: hidden-by-visibility content would be unreachable by keyboard
             duration: 1,
             ease: 'power3.out',
             scrollTrigger: { trigger: el, start: 'top 90%', once: true },

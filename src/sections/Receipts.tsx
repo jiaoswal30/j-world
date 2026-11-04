@@ -22,7 +22,7 @@ export function Receipts() {
           .fromTo('.stamp', { scale: 1.8, autoAlpha: 0, rotation: -30 }, { scale: 1, autoAlpha: 1, rotation: -12, duration: 0.35, ease: 'back.out(2.2)' }, '-=0.2');
         gsap.from('.milestone', {
           y: 30,
-          autoAlpha: 0,
+          opacity: 0, // opacity only: hidden-by-visibility content would be unreachable by keyboard
           stagger: 0.12,
           duration: 0.9,
           scrollTrigger: { trigger: '.milestones', start: 'top 85%', once: true },

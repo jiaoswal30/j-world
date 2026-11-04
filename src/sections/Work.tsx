@@ -1,6 +1,6 @@
 import { lazy, Suspense, useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { looseSingles, projects, tracks } from '../content/site';
-import { Flip } from '../lib/gsap';
+import { Flip, ScrollTrigger } from '../lib/gsap';
 import { prefersReducedMotion } from '../lib/scroll';
 import { useReveal } from '../lib/useReveal';
 import { SectionHead } from '../components/SectionHead';
@@ -45,6 +45,11 @@ export function Work() {
     flipState.current = null;
     ref.current?.querySelector<HTMLElement>(`[data-project="${id}"]`)?.focus({ preventScroll: true });
   }, [openId]);
+
+  // the bin changes the page height: re-measure every scroll trigger below it
+  useLayoutEffect(() => {
+    ScrollTrigger.refresh();
+  }, [binOpen]);
 
   const project = projects.find((p) => p.id === openId) ?? null;
 

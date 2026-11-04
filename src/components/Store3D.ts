@@ -644,6 +644,11 @@ export class Store3D {
     if (!this.running) this.render();
   }
 
+  /** Draw one frame now (used when turntable state changes while the loop is idle). */
+  renderNow() {
+    if (!this.running) this.render();
+  }
+
   start() {
     if (this.running) return;
     this.running = true;

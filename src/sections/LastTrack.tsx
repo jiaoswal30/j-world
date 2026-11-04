@@ -35,6 +35,8 @@ function RunOut() {
     if (lifted) return;
     setLifted(true);
     const reset = () => {
+      // back at the top: keyboard focus starts over too — the next Tab begins at the top of the page
+      document.querySelector<HTMLElement>('.skip-link')?.focus({ preventScroll: true });
       gsap.set('.runout__arm', { rotation: 34 });
       if (spin.current) spin.current.timeScale(1);
       setLifted(false);

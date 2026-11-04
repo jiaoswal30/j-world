@@ -1,6 +1,7 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { gsap } from '../lib/gsap';
 import { prefersReducedMotion } from '../lib/scroll';
+import { hasWebGL } from '../lib/webgl';
 import type { Track } from '../content/site';
 import type { DeckState, Store3D } from './Store3D';
 import { RoomArt } from './ListeningRoom';
@@ -31,6 +32,10 @@ export const StoreLayer = forwardRef<StoreHandle | null, { now: Track | null }>(
     let s: Store3D | null = null;
     let cancelled = false;
     const resize = () => s?.resize(window.innerWidth, window.innerHeight);
+    if (!hasWebGL()) {
+      setFailed(true); // illustrated room instead of the 3D store
+      return;
+    }
     import('./Store3D')
       .then(async ({ Store3D: S }) => {
         if (cancelled) return;
@@ -57,6 +62,24 @@ export const StoreLayer = forwardRef<StoreHandle | null, { now: Track | null }>(
   }, [now]);
 
   useEffect(() => () => void spin.current.kill(), []);
+
+  // Redraw whenever the deck changes (record swap, arm, spin) — never rely on the
+  // idle loop being on, or a frame can freeze mid-swap with an empty platter.
+  useEffect(() => {
+    const last = { a: NaN, r: NaN, s: NaN };
+    const tick = () => {
+      const st = store.current;
+      if (!st || progress.current <= 0) return; // store not on screen yet (prologue)
+      const d = deck.current;
+      if (d.record.autoAlpha === last.a && d.arm.rotation === last.r && d.spin.rot === last.s) return;
+      last.a = d.record.autoAlpha;
+      last.r = d.arm.rotation;
+      last.s = d.spin.rot;
+      st.renderNow();
+    };
+    gsap.ticker.add(tick);
+    return () => gsap.ticker.remove(tick);
+  }, []);
 
   useImperativeHandle(ref, () => ({
     get platter() {
