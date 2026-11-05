@@ -11,16 +11,19 @@ import { Gallery } from './sections/Gallery';
 import { Editorial } from './sections/Editorial';
 import { LastTrack } from './sections/LastTrack';
 
-/** Lift the curtain once fonts are in, so the sign never flashes in a fallback face. */
+/** Show the type once its fonts are in, so the sign never flashes in a fallback face. (The Earth doesn't wait.) */
 function useCurtain() {
   useEffect(() => {
-    const curtain = document.getElementById('curtain');
+    let done = false;
     const lift = () => {
-      curtain?.classList.add('is-up');
-      window.setTimeout(() => curtain?.remove(), 900);
+      if (done) return;
+      done = true;
+      const html = document.documentElement;
+      html.classList.remove('fonts-pending');
+      html.classList.add('fonts-in');
       ScrollTrigger.refresh();
     };
-    const timeout = window.setTimeout(lift, 1400);
+    const timeout = window.setTimeout(lift, 1200);
     document.fonts?.ready.then(() => {
       window.clearTimeout(timeout);
       lift();

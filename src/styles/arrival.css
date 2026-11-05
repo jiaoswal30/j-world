@@ -741,8 +741,15 @@
     justify-content: flex-start;
     width: 100%;
     overflow-x: auto;
+    /* overflow-x:auto silently makes y 'auto' too; the hanging tags then turned the shelf into a
+       tiny vertical scroller that swallowed page swipes. Keep it strictly sideways. */
+    overflow-y: hidden;
+    touch-action: pan-x pan-y;
+    overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
-    padding: 26px 16px 4px;
+    /* room for the tags under the sleeves (they used to spill out); the negative margin keeps the shelf where it was */
+    padding: 26px 16px 52px;
+    margin-bottom: -48px;
     gap: 16px;
     scrollbar-width: none;
   }

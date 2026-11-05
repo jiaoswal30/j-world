@@ -211,19 +211,23 @@ mark.tbc {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* ───────── curtain (font-load fallback) ───────── */
+/* ───────── first paint ─────────
+   The Earth shows the instant it's ready; only the type waits for its fonts
+   (so the sign never flashes in a fallback face), then fades in over it. */
 
-#curtain {
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  background: var(--night);
-  pointer-events: none;
-  transition: opacity 0.7s var(--ease-out);
+html.fonts-pending #root {
+  visibility: hidden;
 }
-
-#curtain.is-up {
-  opacity: 0;
+html.fonts-pending .journey__canvas,
+html.fonts-pending .journey__fallback {
+  visibility: visible;
+}
+html.fonts-in .tcard,
+html.fonts-in .nav {
+  animation: type-in 0.6s var(--ease-out) backwards;
+}
+@keyframes type-in {
+  from { opacity: 0; }
 }
 
 /* ───────── sections ───────── */
@@ -268,4 +272,14 @@ mark.tbc {
 }
 section[tabindex='-1']:focus {
   outline: none;
+}
+
+/* Touch screens: Lenis's stylesheet gives sideways strips (the record shelf, the gallery folders)
+   overscroll-behavior: contain on BOTH axes, so a vertical swipe that started on one never reached
+   the page. Keep them sideways-only, let up/down swipes pass through. (Mouse/trackpad unaffected.) */
+@media (pointer: coarse) {
+  html.lenis [data-lenis-prevent-horizontal] {
+    overscroll-behavior-x: contain;
+    overscroll-behavior-y: auto;
+  }
 }

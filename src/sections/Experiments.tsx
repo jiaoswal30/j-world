@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { experiments, tracks, type Experiment } from '../content/site';
-import { Draggable, InertiaPlugin, useGSAP } from '../lib/gsap';
+import { gsap, Draggable, InertiaPlugin, useGSAP } from '../lib/gsap';
 import { useReveal } from '../lib/useReveal';
 import { SectionHead } from '../components/SectionHead';
 import { Vinyl } from '../components/Vinyl';
@@ -23,14 +23,36 @@ function ScratchRecord() {
         const text = rpm < 1 ? '0' : rpm.toFixed(0);
         if (text !== last && readout.current) readout.current.textContent = (last = text);
       };
-      const [d] = Draggable.create(el, {
-        type: 'rotation',
-        inertia: true,
-        onDrag: update,
-        onThrowUpdate: update,
-        onThrowComplete: update,
-        onPress: () => wrap.current?.classList.add('is-touched'),
-      });
+      const onPress = () => wrap.current?.classList.add('is-touched');
+      // Phones: a rotation drag swallows every swipe that lands on this near-screen-wide disc.
+      // Spin it with sideways drags instead, so up/down swipes still scroll the page.
+      const touch = window.matchMedia('(pointer: coarse)').matches;
+      const [d] = touch
+        ? (() => {
+            const proxy = document.createElement('div');
+            const spin = function (this: Draggable) {
+              gsap.set(el, { rotation: this.x * 0.9 });
+              update();
+            };
+            return Draggable.create(proxy, {
+              type: 'x',
+              trigger: el,
+              inertia: true,
+              allowNativeTouchScrolling: true,
+              onDrag: spin,
+              onThrowUpdate: spin,
+              onThrowComplete: update,
+              onPress,
+            });
+          })()
+        : Draggable.create(el, {
+            type: 'rotation',
+            inertia: true,
+            onDrag: update,
+            onThrowUpdate: update,
+            onThrowComplete: update,
+            onPress,
+          });
       return () => {
         d.kill();
         InertiaPlugin.untrack(el);

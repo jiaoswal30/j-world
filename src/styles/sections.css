@@ -696,6 +696,13 @@
 .plate__img {
   width: 100%;
   height: auto;
+  /* hidden until it arrives: no alt text or broken-image icon flashing while it downloads */
+  color: transparent;
+  opacity: 0;
+  transition: opacity 0.6s var(--ease-out);
+}
+.plate__img.is-loaded {
+  opacity: 1;
 }
 .plate {
   position: relative;
@@ -856,6 +863,13 @@
 }
 .scratch__disc:active {
   cursor: grabbing;
+}
+/* phones: the disc is nearly screen-wide, so up/down swipes must still scroll the page;
+   sideways drags keep spinning it */
+@media (pointer: coarse) {
+  .scratch__disc {
+    touch-action: pan-y !important;
+  }
 }
 .scratch__readout {
   display: grid;
